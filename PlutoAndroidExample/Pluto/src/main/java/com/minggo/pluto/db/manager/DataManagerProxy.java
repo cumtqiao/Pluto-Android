@@ -1,19 +1,17 @@
 package com.minggo.pluto.db.manager;
 
-import android.content.Context;
-
-import com.minggo.pluto.Pluto;
 import com.minggo.pluto.common.AppContext;
 import com.minggo.pluto.db.orm.FinalDb;
 import com.minggo.pluto.util.LogUtils;
 import com.minggo.pluto.util.PlutoFileCache;
 import com.minggo.pluto.util.SharePreferenceUtils;
+import java.util.List;
 
 /**
  * Created by minggo on 2017/2/21.
  */
 
-public class DataManagerProxy{
+public class DataManagerProxy implements DataManager{
 
     public static final String TAG = "DATA_MANAGER";
 
@@ -21,26 +19,13 @@ public class DataManagerProxy{
         SQLITE,FILECACHE,SHAREPREFERENCE
     }
 
-    private static DataManager dataManagerStub;
+    private DataManager dataManagerStub;
 
-    private static DataManagerProxy dataManagerProxy;
-
-    private DataManagerProxy(){
-
-    }
-    public static DataManagerProxy getInstance(DataType type){
-        if (dataManagerProxy == null){
-            synchronized (DataManagerProxy.class){
-                if (dataManagerProxy == null){
-                    dataManagerProxy = new DataManagerProxy();
-                }
-            }
-        }
+    public DataManagerProxy (DataType type){
         getDataManager(type);
-        return dataManagerProxy;
     }
 
-    private static DataManager getDataManager(DataType type){
+    private DataManager getDataManager(DataType type){
         switch (type){
             case SQLITE:
                 dataManagerStub = FinalDb.create(AppContext.getInstance().context);
@@ -57,20 +42,56 @@ public class DataManagerProxy{
         return dataManagerStub;
     }
 
+    @Override
     public void saveData(Object key, Object object) {
         dataManagerStub.saveData(key,object);
     }
 
+    @Override
     public <T> T queryData(Object key,Class<T> clazz) {
         return dataManagerStub.queryData(key,clazz);
     }
 
+    @Override
     public <T> void deleteData(Object key,Class<T> clazz) {
         dataManagerStub.deleteData(key,clazz);
     }
 
+    @Override
     public void updateData(Object key, Object object) {
         dataManagerStub.updateData(key,object);
+    }
+
+    /**
+     * 根据查询语句查询model 注意（"date='"+dateYMD+"'"）单引号隔开
+     * @param clazz
+     * @param selectArg
+     * @param <T>
+     * @return
+     */
+    public <T> T queryModelData(Class<T> clazz,String selectArg){
+        if (dataManagerStub instanceof FinalDb){
+            return ((FinalDb) dataManagerStub).findModelByWhere(clazz,selectArg);
+        }else {
+            LogUtils.info(TAG,"代理类型不是 FinalDb");
+            return null;
+        }
+    }
+
+    /**
+     * 根据查询语句查询列表注意（"date='"+dateYMD+"'"）单引号隔开
+     * @param clazz
+     * @param selectArg
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> queryListData(Class<T> clazz,String selectArg){
+        if (dataManagerStub instanceof FinalDb){
+            return ((FinalDb) dataManagerStub).findAllByWhere(clazz,selectArg);
+        }else {
+            LogUtils.info(TAG,"代理类型不是 FinalDb");
+            return null;
+        }
     }
 
     /**
@@ -134,16 +155,16 @@ public class DataManagerProxy{
      * @param <T> 查询类型
      * @return
      */
-    public <T> T queryByNameAndKey(String name,String key){
+    public <T> T queryByNameAndKey(String name,String key,Class<T> clazz){
 
         T t = null;
         if (dataManagerStub instanceof SharePreferenceUtils){
-            if (t instanceof Integer){
+            if (clazz.equals(Integer.class)||clazz.equals(int.class)){
 
                 t =  (T) Integer.valueOf (((SharePreferenceUtils) dataManagerStub).getInt(name,key,0));
-            }else if (t instanceof String){
+            }else if (clazz.equals(String.class)){
                 t = (T) ((SharePreferenceUtils) dataManagerStub).getString(name,key);
-            }else if (t instanceof Boolean){
+            }else if (clazz.equals(Boolean.class)||clazz.equals(boolean.class)){
                 t = (T) Boolean.valueOf(((SharePreferenceUtils) dataManagerStub).getBoolean(name,key));
             }
             return t;

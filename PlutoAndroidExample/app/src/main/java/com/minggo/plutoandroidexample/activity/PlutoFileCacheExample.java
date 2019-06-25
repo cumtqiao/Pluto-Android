@@ -37,7 +37,7 @@ public class PlutoFileCacheExample extends PlutoActivity implements OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pluto_file_cache_example);
         ButterKnife.bind(this);
-        dataManagerProxy = DataManagerProxy.getInstance(DataType.FILECACHE);
+        dataManagerProxy = new DataManagerProxy(DataType.FILECACHE);
 
         data = "This is String data";
         key = "plutokey";
@@ -73,5 +73,11 @@ public class PlutoFileCacheExample extends PlutoActivity implements OnClickListe
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.alpha_sllow_in, R.anim.push_right_out);
     }
 }

@@ -41,7 +41,7 @@ public class PlutoORMDBFrameworkExample extends PlutoActivity implements OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pluto_ormdbframework_example);
         ButterKnife.bind(this);
-        dataManagerProxy = DataManagerProxy.getInstance(DataType.SQLITE);
+        dataManagerProxy = new DataManagerProxy(DataType.SQLITE);
         user = new User();
         user.userId = 1000;
         user.username = "minggo";
@@ -96,5 +96,10 @@ public class PlutoORMDBFrameworkExample extends PlutoActivity implements OnClick
             default:
                 break;
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.alpha_sllow_in, R.anim.push_right_out);
     }
 }

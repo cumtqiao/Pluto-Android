@@ -1,11 +1,14 @@
 # Pluto
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/minggo620/Pluto-Android/master/LICENSE)&nbsp;
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]()
-[![Github All Releases](https://img.shields.io/badge/download-1.4M Total-green.svg)](https://codeload.github.com/minggo620/Pluto-Android/zip/master)  
+[![Travis](https://img.shields.io/badge/build-passing-brightgreen.svg?maxAge=2592000)]()
+[![Github Releases](https://img.shields.io/badge/release-1.2.5-blue.svg?maxAge=2592000)](https://bintray.com/minggoopen/pluto)
+[![Github All Releases](https://img.shields.io/badge/download-1.0M-green.svg)](https://codeload.github.com/minggo620/Pluto-Android/zip/master)  
 
-High integrated development framework for Android applications.<br/>
-###更多交流请加微信公众号：minggo_dev
+High integrated development framework for Android applications.
+
+### 更多交流请加微信公众号：minggo_dev
 ![微信公众号：minggo_dev](http://upload-images.jianshu.io/upload_images/1252638-7a68bcc2b2ec9939.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 Features
 ==============
 - **Cache Data High Integrated**:The Data operation(Sqlite, SharePreference, File) is integrated as a DataFramework, and provide a DataManagerProxy to operating cache data .
@@ -17,15 +20,15 @@ Features
 
 Architecture diagram
 ================
-![Pluto架构图](http://upload-images.jianshu.io/upload_images/1252638-594c275b66a53e9b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Pluto架构图](http://upload-images.jianshu.io/upload_images/1252638-ad8a8f4aa61f8005.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 Usage
 ==============
 
-###Initial Pluto 
+### Initial Pluto 
 In app Bulid.gradle file dependencies add under sentence
 
-`compile 'com.minggo:Pluto:1.1.2'`
+`compile 'com.minggo:Pluto:1.2.5'`
 ```
 public class MyApplication extends Application {
 	 @Override
@@ -47,7 +50,7 @@ public class MyApplication extends Application {
 
 Pluto has to be inited with `initPluto(Context context)` method, and it's better to be inited in child of Application class.
 
-###UIFramework
+### UIFramework
 - **PlutoActivity Usage**
 
 ```
@@ -102,17 +105,15 @@ public class PlutoDialogExample extends PlutoActivity implements OnClickListener
 ```
 PlutoDialog has some defined constant, which are match difference dialog, such `PlutoDialog.DEFAULT_EXIT` is defined exit common dialog.More detail you can see them in demo.
 
-- **FinalBitmap Usage**
+- **Glide Usage**
 
 ```
-FinalBitmap finalBitmap = FinalBitmap.create(this); //this is Context type
-finalBitmap.configLoadingImage(R.drawable.pluto_corner);
-finalBitmap.configLoadfailImage(R.drawable.pluto_corner);
-finalBitmap.display(imageView2,"http://m8en.com:8877/content/charmword_thumbnail.png");
-
+Glide.with(this).load("http://m8en.com:8877/content/logo_battery_notification.png").placeholder(R.drawable.pluto_corner).into(imageView1);
+Glide.with(this).load("http://m8en.com:8877/content/charmword_thumbnail.png").placeholder(R.drawable.pluto_corner).into(imageView2);
+Glide.with(this).load("http://m8en.com:8877/content/logo_2048_thumbnail.png").placeholder(R.drawable.pluto_corner).into(imageView3);
 ```
 
-###ServiceFramework
+### ServiceFramework
 - **LogicManager Usage**
 
 Finally, all logic operation will be integrated in a sentence of chain programming 
@@ -142,7 +143,7 @@ public void onClick(View view) {
 	}
 	...
 ```
-####①LogicManager Construction Method
+#### ①LogicManager Construction Method
 It' most import to use construction method, `public <T> LogicManager(Handler handler, Class<T> clazz, LogicManagerType logicManagerType){}`, the param `Class<T> clazz` is PlutoApiEngine deal data and return this data of type, `LogicManagerType` is an enum that has 12 kind of network and cache logic.
 
 ```
@@ -239,11 +240,11 @@ Sometimes, you need to extend ApiClient class to fix `Result<Map>` or other need
 用法
 ==============
 
-###初始化Pluto 
+### 初始化Pluto 
 
 在app Module Build.gradle中的dependencies加上一下这句
 
-`compile 'com.minggo:Pluto:1.1.2'`
+`compile 'com.minggo:Pluto:1.2.5'`
 
 ```
 public class MyApplication extends Application {
@@ -266,7 +267,7 @@ public class MyApplication extends Application {
 ```
 
 Pluto 必须调用`initPluto(Context context)`来初始化, 最好在自定义的Application中初始化。
-###UIFramework
+### UIFramework
 - **PlutoActivity使用**
 
 ```
@@ -325,17 +326,15 @@ public class PlutoDialogExample extends PlutoActivity implements OnClickListener
 ```
 PlutoDialog 有几种常量对应不同Dialog样式，更多可以参考Demo项目，同时可以扩展样式.
 
-- **FinalBitmap 用法**
+- **Glide 用法**
 
 ```
-FinalBitmap finalBitmap = FinalBitmap.create(this); //this is Context type
-finalBitmap.configLoadingImage(R.drawable.pluto_corner);
-finalBitmap.configLoadfailImage(R.drawable.pluto_corner);
-finalBitmap.display(imageView2,"http://m8en.com:8877/content/charmword_thumbnail.png");
-
+Glide.with(this).load("http://m8en.com:8877/content/logo_battery_notification.png").placeholder(R.drawable.pluto_corner).into(imageView1);
+Glide.with(this).load("http://m8en.com:8877/content/charmword_thumbnail.png").placeholder(R.drawable.pluto_corner).into(imageView2);
+Glide.with(this).load("http://m8en.com:8877/content/logo_2048_thumbnail.png").placeholder(R.drawable.pluto_corner).into(imageView3);
 ```
 
-###ServiceFramework
+### ServiceFramework
 - **LogicManager 用法**
 
 最终暴露出来的操作就是一句链式的方法调用。
@@ -365,7 +364,7 @@ public void onClick(View view) {
 	}
 	...
 ```
-####①LogicManager构造方法说明
+#### ①LogicManager构造方法说明
 构造方法 `public <T> LogicManager(Handler handler, Class<T> clazz, LogicManagerType logicManagerType){}`中的`Class<T> clazz` 参数是PlutoApiEngine处理数据后返回的指定数据类型, `LogicManagerType` 是一个有12种类型的枚举.每个枚举根据表意理解就行，枚举如下
 
 ```
@@ -444,5 +443,4 @@ ThreadPoolUtils.java
 
 - **NetworkFramework扩展**
 网络数据层级如需调整，比如增加`Result<Map>` 返回的类型值或者其他网络业务，可以找到ApiClient类进行扩展即可。
-
 
